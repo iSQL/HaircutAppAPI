@@ -1,0 +1,6 @@
+@HaircutAppAPI_HostAddress = http://localhost:5182
+
+GET {{HaircutAppAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
