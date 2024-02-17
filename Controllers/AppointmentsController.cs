@@ -27,7 +27,14 @@ namespace HaircutAppAPI.Controllers
 		public async Task<ActionResult<Appointment>> PostAppointment(Appointment appointment)
 		{
 			await _context.AddAppointmentAsync(appointment);
-			return CreatedAtAction("GetAppointments", new { id = appointment.customerId }, appointment);
+			return CreatedAtAction("GetAppointments", new { id = appointment.CustomerID }, appointment);
+		}
+
+		[HttpDelete("DeleteAll")]
+		public async Task<IActionResult> DeleteAllAppointments()
+		{
+			await _context.DeleteAllAppointmentsAsync();
+			return NoContent(); // 204 No Content is appropriate for a delete action
 		}
 	}
 }

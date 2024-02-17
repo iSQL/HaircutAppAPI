@@ -31,7 +31,23 @@ namespace HaircutAppAPI.Services
 
 		public async Task AddAppointmentAsync(Appointment appointment)
 		{
-			await _container.CreateItemAsync(appointment, new PartitionKey(appointment.customerId));
+			await _container.CreateItemAsync(appointment, new PartitionKey(appointment.CustomerID));
 		}
+
+		public async Task DeleteAllAppointmentsAsync()
+		{
+			var query = _container.GetItemQueryIterator<Appointment>();
+			var tasks = new List<Task>();
+			while (query.HasMoreResults)
+			{
+				var response = await query.ReadNextAsync();
+				foreach (var item in response)
+				{
+					tasks.Add(_container.DeleteItemAsync<Appointment>(item.id, new PartitionKey(item.CustomerID)));
+				}
+			}
+			await Task.WhenAll(tasks);
+		}
+
 	}
 }
