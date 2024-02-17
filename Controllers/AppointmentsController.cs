@@ -17,17 +17,17 @@ namespace HaircutAppAPI.Controllers
 
 		// GET: api/Appointments
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
+		public async Task<ActionResult<IEnumerable<Reservation>>> GetAppointments()
 		{
 			return Ok(await _context.GetAppointmentsAsync());
 		}
 
 		// POST: api/Appointments
 		[HttpPost]
-		public async Task<ActionResult<Appointment>> PostAppointment(Appointment appointment)
+		public async Task<ActionResult<Reservation>> PostAppointment(Reservation appointment)
 		{
 			await _context.AddAppointmentAsync(appointment);
-			return CreatedAtAction("GetAppointments", new { id = appointment.CustomerID }, appointment);
+			return CreatedAtAction("GetAppointments", new { appointment.id }, appointment);
 		}
 
 		[HttpDelete("DeleteAll")]

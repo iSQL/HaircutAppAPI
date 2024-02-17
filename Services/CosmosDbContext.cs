@@ -17,10 +17,10 @@ namespace HaircutAppAPI.Services
 			_container = cosmosClient.GetContainer(databaseName, containerName);
 		}
 
-		public async Task<IEnumerable<Appointment>> GetAppointmentsAsync()
+		public async Task<IEnumerable<Reservation>> GetAppointmentsAsync()
 		{
-			var query = _container.GetItemQueryIterator<Appointment>();
-			List<Appointment> results = new List<Appointment>();
+			var query = _container.GetItemQueryIterator<Reservation>();
+			List<Reservation> results = new List<Reservation>();
 			while (query.HasMoreResults)
 			{
 				var response = await query.ReadNextAsync();
@@ -29,21 +29,21 @@ namespace HaircutAppAPI.Services
 			return results;
 		}
 
-		public async Task AddAppointmentAsync(Appointment appointment)
+		public async Task AddAppointmentAsync(Reservation appointment)
 		{
-			await _container.CreateItemAsync(appointment, new PartitionKey(appointment.CustomerID));
+			await _container.CreateItemAsync(appointment, new PartitionKey(appointment.id));
 		}
 
 		public async Task DeleteAllAppointmentsAsync()
 		{
-			var query = _container.GetItemQueryIterator<Appointment>();
+			var query = _container.GetItemQueryIterator<Reservation>();
 			var tasks = new List<Task>();
 			while (query.HasMoreResults)
 			{
 				var response = await query.ReadNextAsync();
 				foreach (var item in response)
 				{
-					tasks.Add(_container.DeleteItemAsync<Appointment>(item.id, new PartitionKey(item.CustomerID)));
+					tasks.Add(_container.DeleteItemAsync<Reservation>(item.id, new PartitionKey(item.id)));
 				}
 			}
 			await Task.WhenAll(tasks);

@@ -8,8 +8,8 @@ builder.Services.AddControllers();
 
 // Cosmos DB
 var cosmosConnectionString = builder.Configuration["CosmosDb:AccountEndpoint"];
-var databaseName = "HaircutAppointmentsDB";
-var containerName = "Appointments";
+var databaseName = "HaircutAppDB";
+var containerName = "Reservations";
 builder.Services.AddSingleton<CosmosDbContext>(s => new CosmosDbContext(cosmosConnectionString, databaseName, containerName));
 
 
