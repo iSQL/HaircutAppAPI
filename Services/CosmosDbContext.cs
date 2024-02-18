@@ -17,7 +17,7 @@ namespace HaircutAppAPI.Services
 			_container = cosmosClient.GetContainer(databaseName, containerName);
 		}
 
-		public async Task<IEnumerable<Reservation>> GetAppointmentsAsync()
+		public async Task<IEnumerable<Reservation>> GetReservationAsync()
 		{
 			var query = _container.GetItemQueryIterator<Reservation>();
 			List<Reservation> results = new List<Reservation>();
@@ -29,12 +29,12 @@ namespace HaircutAppAPI.Services
 			return results;
 		}
 
-		public async Task AddAppointmentAsync(Reservation appointment)
+		public async Task AddReservationAsync(Reservation appointment)
 		{
 			await _container.CreateItemAsync(appointment, new PartitionKey(appointment.id));
 		}
 
-		public async Task DeleteAllAppointmentsAsync()
+		public async Task DeleteAllReservationsAsync()
 		{
 			var query = _container.GetItemQueryIterator<Reservation>();
 			var tasks = new List<Task>();
